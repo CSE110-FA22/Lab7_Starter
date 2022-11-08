@@ -28,6 +28,8 @@ self.addEventListener('fetch', function (event) {
   /*******************************/
   // This article from Google will help with this portion. Before asking ANY
   // questions about this section, read this article.
+  // NOTE: In the article's code REPLACE fetch(event.request.url) with
+  //       fetch(event.request)
   // https://developer.chrome.com/docs/workbox/caching-strategies-overview/
   /*******************************/
   // B7. TODO - Respond to the event by opening the cache using the name we gave
