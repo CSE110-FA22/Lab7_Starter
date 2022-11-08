@@ -59,8 +59,9 @@ function initializeServiceWorker() {
 /**
  * Reads 'recipes' from localStorage and returns an array of
  * all of the recipes found (parsed, not in string form). If
- * nothing is found in localStorage for 'recipes', an empty array
- * is returned.
+ * nothing is found in localStorage, network requests are made to all
+ * of the URLs in RECIPE_URLs, an array is made from those recipes, that
+ * array is saved to localStorage, and then the array is returned.
  * @returns {Array<Object>} An array of recipes found in localStorage
  */
 async function getRecipes() {
