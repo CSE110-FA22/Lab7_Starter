@@ -1,1 +1,1 @@
-# Lab 7 NEW - Starter
+# Lab 7 - Starter
