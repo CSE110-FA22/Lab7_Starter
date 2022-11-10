@@ -2,7 +2,14 @@
 //         so do not move it next to the other scripts
 
 const CACHE_NAME = 'lab-7-starter';
-
+const RECIPE_URLS = [
+  'https://introweb.tech/assets/json/1_50-thanksgiving-side-dishes.json',
+  'https://introweb.tech/assets/json/2_roasting-turkey-breast-with-stuffing.json',
+  'https://introweb.tech/assets/json/3_moms-cornbread-stuffing.json',
+  'https://introweb.tech/assets/json/4_50-indulgent-thanksgiving-side-dishes-for-any-holiday-gathering.json',
+  'https://introweb.tech/assets/json/5_healthy-thanksgiving-recipe-crockpot-turkey-breast.json',
+  'https://introweb.tech/assets/json/6_one-pot-thanksgiving-dinner.json',
+];
 // Installs the service worker. Feed it some initial URLs to cache
 self.addEventListener('install', function (event) {
   event.waitUntil(
@@ -37,4 +44,19 @@ self.addEventListener('fetch', function (event) {
   // B8. TODO - If the request is in the cache, return with the cached version.
   //            Otherwise fetch the resource, add it to the cache, and return
   //            network response.
+  event.respondWith(caches.open(CACHE_NAME).then((cache) => {
+    // Respond with the image from the cache or from the network
+    return cache.match(event.request).then((cachedResponse) => {
+      return cachedResponse || fetch(event.request).then((fetchedResponse) => {
+        // Add the network response to the cache for future visits.
+        // Note: we need to make a copy of the response to save it in
+        // the cache and use the original as the request response.
+        cache.put(event.request, fetchedResponse.clone());
+
+        // Return the network response
+        return fetchedResponse;
+      });
+    });
+  }));
+
 });
