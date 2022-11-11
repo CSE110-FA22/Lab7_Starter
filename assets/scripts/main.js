@@ -72,7 +72,7 @@ function initializeServiceWorker() {
       //            log that it has failed.
 
       catch (err) {
-        console.log(err)
+        console.log("Fail to register")
       }
 
       // STEPS B6 ONWARDS WILL BE IN /sw.js
