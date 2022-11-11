@@ -60,6 +60,8 @@ function initializeServiceWorker() {
           scope: "/",
         });
 
+        console.log ("get to here! ")
+
         // B4. TODO - Once the service worker has been successfully registered, console
         //            log that it was successful.
         if (registration.waiting) {
