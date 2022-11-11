@@ -72,7 +72,7 @@ function initializeServiceWorker() {
       //            log that it has failed.
 
       catch (err) {
-        console.log("Fails " + err)
+        console.log(err)
       }
 
       // STEPS B6 ONWARDS WILL BE IN /sw.js
