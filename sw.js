@@ -49,7 +49,7 @@ self.addEventListener('fetch', function (event) {
     //            network response.
 
     return cache.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request.url).then((fetchedResponse) => {
+      return cachedResponse || fetch(event.request).then((fetchedResponse) => {
         // Add the network response to the cache for future visits.
         // Note: we need to make a copy of the response to save it in
         // the cache and use the original as the request response.
