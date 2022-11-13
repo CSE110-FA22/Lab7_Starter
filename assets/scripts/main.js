@@ -45,15 +45,27 @@ function initializeServiceWorker() {
   // We first must register our ServiceWorker here before any of the code in
   // sw.js is executed.
   // B1. TODO - Check if 'serviceWorker' is supported in the current browser
+  if (!'serviceWorker' in navigator) {
+    console.error('serviceWorker is not supported in the current browser.');
+  }
   // B2. TODO - Listen for the 'load' event on the window object.
-  // Steps B3-B6 will be *inside* the event listener's function created in B2
-  // B3. TODO - Register './sw.js' as a service worker (The MDN article
-  //            "Using Service Workers" will help you here)
-  // B4. TODO - Once the service worker has been successfully registered, console
-  //            log that it was successful.
-  // B5. TODO - In the event that the service worker registration fails, console
-  //            log that it has failed.
-  // STEPS B6 ONWARDS WILL BE IN /sw.js
+  window.addEventListener('load', async () => {
+    // Steps B3-B6 will be *inside* the event listener's function created in B2
+    try {
+      // B3. TODO - Register './sw.js' as a service worker (The MDN article
+      //            "Using Service Workers" will help you here)
+      let registration = await navigator.serviceWorker.register('./sw.js');
+      // B4. TODO - Once the service worker has been successfully registered, console
+      //            log that it was successful.
+      console.log('serviceWorker successfully added.');
+    // B5. TODO - In the event that the service worker registration fails, console
+    //            log that it has failed.
+    } catch (error) {
+      console.error(error);
+    }
+    // STEPS B6 ONWARDS WILL BE IN /sw.js
+  })
+  
 }
 
 /**
@@ -70,7 +82,7 @@ async function getRecipes() {
   //            If there are recipes, return them.
   let recipes = localStorage.getItem('recipes');
   if (recipes !== null) {
-    return JSON.parse(recipes);
+    return await JSON.parse(recipes);
   }
   /**************************/
   
@@ -90,29 +102,27 @@ async function getRecipes() {
     /**************************/
     // A4. TODO - Loop through each recipe in the RECIPE_URLS array constant
     //            declared above
-    for (let i = 0; i < RECIPE_URLS.length; i++) {
+    RECIPE_URLS.forEach(async (URL) => {
       // A5. TODO - Since we are going to be dealing with asynchronous code, create
       //            a try / catch block. A6-A9 will be in the try portion, A10-A11
       //            will be in the catch portion.
-      
       try {
         // A6. TODO - For each URL in that array, fetch the URL - MDN also has a great
         //            article on fetch(). NOTE: Fetches are ASYNCHRONOUS, meaning that
         //            you must either use "await fetch(...)" or "fetch.then(...)". This
         //            function is using the async keyword so we recommend "await"
-        let fetchResult = await fetch(RECIPE_URLS[i]);
+        let fetchResult = await fetch(URL);
         // A7. TODO - For each fetch response, retrieve the JSON from it using .json().
         //            NOTE: .json() is ALSO asynchronous, so you will need to use
         //            "await" again
         let fetchJson = await fetchResult.json();
-        console.log(fetchJson);
         // A8. TODO - Add the new recipe to the recipes array
         recipesArr = recipesArr.concat(fetchJson);
         // A9. TODO - Check to see if you have finished retrieving all of the recipes,
         //            if you have, then save the recipes to storage using the function
         //            we have provided. Then, pass the recipes array to the Promise's
         //            resolve() method.
-        if (i == RECIPE_URLS.length-1) { // on the last iteration.
+        if (recipesArr.length == RECIPE_URLS.length) { // on the last iteration.
           saveRecipesToStorage(recipesArr);
           resolve(recipesArr);
         }
@@ -122,7 +132,7 @@ async function getRecipes() {
         // A11. TODO - Pass any errors to the Promise's reject() function
         reject(error);
       }
-    } /* end for */
+    }) /* end for */
   })
   /**************************/
 }
