@@ -2,7 +2,6 @@
 //         so do not move it next to the other scripts
 
 const CACHE_NAME = 'lab-7-starter';
-
 // Installs the service worker. Feed it some initial URLs to cache
 self.addEventListener('install', function (event) {
   event.waitUntil(
@@ -20,7 +19,7 @@ self.addEventListener('activate', function (event) {
 });
 
 // Intercept fetch requests and cache them
-self.addEventListener('fetch', function (event) {
+// self.addEventListener('fetch', async (event) => {
   // We added some known URLs to the cache above, but tracking down every
   // subsequent network request URL and adding it manually would be very taxing.
   // We will be adding all of the resources not specified in the intiial cache
@@ -37,4 +36,4 @@ self.addEventListener('fetch', function (event) {
   // B8. TODO - If the request is in the cache, return with the cached version.
   //            Otherwise fetch the resource, add it to the cache, and return
   //            network response.
-});
+// });
