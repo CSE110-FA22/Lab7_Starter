@@ -1,5 +1,7 @@
 // main.js
 
+
+
 // CONSTANTS
 const RECIPE_URLS = [
   'https://introweb.tech/assets/json/1_50-thanksgiving-side-dishes.json',
@@ -48,7 +50,7 @@ function initializeServiceWorker() {
   const registerServiceWorker = async () => {
     if ("serviceWorker" in navigator) {
       try {
-        const registration = await navigator.serviceWorker.register("/sw.js", {
+        const registration = await navigator.serviceWorker.register("./sw.js", {
           scope: "/",
         });
         if (registration.installing) {
@@ -105,25 +107,34 @@ async function getRecipes() {
   //            function (we call these callback functions). That function will
   //            take two parameters - resolve, and reject. These are functions
   //            you can call to either resolve the Promise or Reject it.
-  let myProm = new Promise((resolve, reject)=>{
-    for(let i =0; i < RECIPE_URLS.length;i++){
-      try {
-        let x = await(fetch(RECIPE_URLS[i]));
-        let y= await(x.json());
-        rep.append(y); //A8
-        if(ResizeObserver.length == RECIPE_URLS.length){
-          saveRecipesToStorage(rep);
-          resolve(rep);
+
+  async function reqRecipies() {
+    return new Promise((resolve,reject) => {
+      for (let i =0 ;i < RECIPE_URLS.length; i++ ) {
+        try{
+          console.log(RECIPE_URLS[i]);
+          // wtfffffffffffffffffff
+          fetch(`${RECIPE_URLS[i]}`).then(response => response.json()).then(data => {
+            console.log(data);
+            rep.push(data);
+            if (RECIPE_URLS.length == rep.length) {
+              console.log("here");
+              saveRecipesToStorage(rep);
+              resolve(rep);
+            }
+          });
+          //console.log(`Rep size: ${rep.length}`);
+          //console.log(`og size: ${RECIPE_URLS.length}`);
         }
-
-      } catch (error) {
-        console.error; //A10
-        reject(error); //A11
+        catch{
+          console.error();
+          reject(error);
+        }
       }
-    }
-
-
-  })
+    });
+  }
+  
+  reqRecipies();
   /**************************/
   // A4-A11 will all be *inside* the callback function we passed to the Promise
   // we're returning
