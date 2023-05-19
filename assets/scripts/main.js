@@ -65,19 +65,48 @@ function initializeServiceWorker() {
  * @returns {Array<Object>} An array of recipes found in localStorage
  */
 async function getRecipes() {
+  let recipes;
   // EXPOSE - START (All expose numbers start with A)
   // A1. TODO - Check local storage to see if there are any recipes.
   //            If there are recipes, return them.
   /**************************/
+  let storedRecipes = localStorage.getItem('recipes');
+  if (storedRecipes) {
+    return JSON.parse(storedRecipes);
+  }
+
   // The rest of this method will be concerned with requesting the recipes
   // from the network
   // A2. TODO - Create an empty array to hold the recipes that you will fetch
+  recipes = [];
   // A3. TODO - Return a new Promise. If you are unfamiliar with promises, MDN
   //            has a great article on them. A promise takes one parameter - A
   //            function (we call these callback functions). That function will
   //            take two parameters - resolve, and reject. These are functions
   //            you can call to either resolve the Promise or Reject it.
   /**************************/
+  return new Promise(async (resolve, reject) => {
+    try {
+      // A4. TODO - Loop through each recipe in the RECIPE_URLs array constant
+      for (let url of RECIPE_URLS) {
+        // A6. TODO - For each URL in that array, fetch the URL
+        let response = await fetch(url);
+        // A7. TODO - For each fetch response, retrieve the JSON from it using .json().
+        let recipe = await response.json();
+        // A8. TODO - Add the new recipe to the recipes array
+        recipes.push(recipe);
+      }
+      // A9. TODO - Check to see if you have finished retrieving all of the recipes,
+      //            if you have, then save the recipes to storage
+      saveRecipesToStorage(recipes);
+      resolve(recipes);
+    } catch (error) {
+      // A10. TODO - Log any errors from catch using console.error
+      console.error(error);
+      // A11. TODO - Pass any errors to the Promise's reject() function
+      reject(error);
+    }
+  });
   // A4-A11 will all be *inside* the callback function we passed to the Promise
   // we're returning
   /**************************/
