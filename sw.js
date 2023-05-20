@@ -3,6 +3,15 @@
 
 const CACHE_NAME = 'lab-7-starter';
 
+const RECIPE_URLS = [
+  'https://introweb.tech/assets/json/1_50-thanksgiving-side-dishes.json',
+  'https://introweb.tech/assets/json/2_roasting-turkey-breast-with-stuffing.json',
+  'https://introweb.tech/assets/json/3_moms-cornbread-stuffing.json',
+  'https://introweb.tech/assets/json/4_50-indulgent-thanksgiving-side-dishes-for-any-holiday-gathering.json',
+  'https://introweb.tech/assets/json/5_healthy-thanksgiving-recipe-crockpot-turkey-breast.json',
+  'https://introweb.tech/assets/json/6_one-pot-thanksgiving-dinner.json',
+];
+
 // Installs the service worker. Feed it some initial URLs to cache
 self.addEventListener('install', function (event) {
   event.waitUntil(
