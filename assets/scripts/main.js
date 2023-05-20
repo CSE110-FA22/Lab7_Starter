@@ -57,15 +57,31 @@ function initializeServiceWorker() {
   // We first must register our ServiceWorker here before any of the code in
   // sw.js is executed.
   // B1. TODO - Check if 'serviceWorker' is supported in the current browser
-  // B2. TODO - Listen for the 'load' event on the window object.
-  // Steps B3-B6 will be *inside* the event listener's function created in B2
-  // B3. TODO - Register './sw.js' as a service worker (The MDN article
-  //            "Using Service Workers" will help you here)
-  // B4. TODO - Once the service worker has been successfully registered, console
-  //            log that it was successful.
-  // B5. TODO - In the event that the service worker registration fails, console
-  //            log that it has failed.
-  // STEPS B6 ONWARDS WILL BE IN /sw.js
+  // 这个网页有例子：https://developer.mozilla.org/zh-CN/docs/Web/API/Service_Worker_API/Using_Service_Workers
+  // const registerServiceWorker = async () => { if ("serviceWorker" in navigator) { try ...
+  if ('serviceWorker' in navigator) {
+    // B2. TODO - Listen for the 'load' event on the window object.
+    window.addEventListener('load', function(){
+      // Steps B3-B6 will be *inside* the event listener's function created in B2
+      // B3. TODO - Register './sw.js' as a service worker (The MDN article
+      //            "Using Service Workers" will help you here)
+      navigator.serviceWorker.register('/sw.js')
+      // well, this is actually a promise? 
+      // 第一个函数是 Promise 成功解析（即 Service Worker 成功注册）时要调用的。
+      // 第二个函数是 Promise 被拒绝（即 Service Worker 注册失败）时要调用的。
+      .then((success) => {
+      // B4. TODO - Once the service worker has been successfully registered, console
+      //            log that it was successful.
+        console.log("register success. 注册成功了。");
+      })
+      .catch((getError) => {
+      // B5. TODO - In the event that the service worker registration fails, console
+      //            log that it has failed.
+        console.log("register failed。");
+      });
+      // STEPS B6 ONWARDS WILL BE IN /sw.js
+    });
+  }
 }
 
 /**
