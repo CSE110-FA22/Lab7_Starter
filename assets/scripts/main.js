@@ -1,6 +1,18 @@
 // main.js
 
 // CONSTANTS
+// URL基本内容格式，以https://introweb.tech/assets/json/1_50-thanksgiving-side-dishes.json为例：
+// {
+//   "imgSrc": "https://introweb.tech/assets/images/recipes/1_50-thanksgiving-side-dishes.jpeg",
+//   "imgAlt": "Mashed potatoes on table",
+//   "titleLnk": "https://www.loveandlemons.com/thanksgiving-side-dishes/",
+//   "titleTxt": "50 Thanksgiving Side Dishes: Easy Mashed Potatoes",
+//   "organization": "Love and Lemons",
+//   "rating": 5,
+//   "numRatings": 13,
+//   "lengthTime": "1 hr 10 min",
+//   "ingredients": "Roasted garlic, yukon gold, rosemary, butter, olive oil"
+// }
 const RECIPE_URLS = [
   'https://introweb.tech/assets/json/1_50-thanksgiving-side-dishes.json',
   'https://introweb.tech/assets/json/2_roasting-turkey-breast-with-stuffing.json',
@@ -68,6 +80,10 @@ async function getRecipes() {
   // EXPOSE - START (All expose numbers start with A)
   // A1. TODO - Check local storage to see if there are any recipes.
   //            If there are recipes, return them.
+  if (localStorageRecipes = localStorage.getItem('recipes')){
+    // 因为提到了要(parsed, not in string form)
+    return JSON.parse(localStorageRecipes);
+  }
   /**************************/
   // The rest of this method will be concerned with requesting the recipes
   // from the network
