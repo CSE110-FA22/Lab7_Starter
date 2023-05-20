@@ -78,9 +78,16 @@ function initializeServiceWorker() {
  */
 async function getRecipes() {
   // EXPOSE - START (All expose numbers start with A)
+
+  // 首先打开网页，去devTool，Application，storage，清空localStorage
+  // 上一次lab留下来的数据还在那里，要清除，不然localStorage不为空，不会显示这个lab的item
+
+
+
   // A1. TODO - Check local storage to see if there are any recipes.
   //            If there are recipes, return them.
-  if (localStorageRecipes = localStorage.getItem('recipes')){
+  let localStorageRecipes = localStorage.getItem('recipes')
+  if (localStorageRecipes){
     // 因为提到了要(parsed, not in string form)
     return JSON.parse(localStorageRecipes);
   }
@@ -101,8 +108,11 @@ async function getRecipes() {
     /**************************/
     // A4. TODO - Loop through each recipe in the RECIPE_URLS array constant
     //            declared above
-    for (let i=0; i<RECIPE_URLS.length; i++ ){
-      let recipe_url = RECIPE_URLS[i];
+    let i = 0;
+    // for (let i=0; i<RECIPE_URLS.length; i++ ){
+    for (let recipe_url of RECIPE_URLS){
+      // let recipe_url = RECIPE_URLS[i];
+      i = i + 1;
       // A5. TODO - Since we are going to be dealing with asynchronous code, create
       //            a try / catch block. A6-A9 will be in the try portion, A10-A11
       //            will be in the catch portion.
@@ -117,20 +127,22 @@ async function getRecipes() {
         //            "await" again
         let currentRecipe = await response.json();
         // A8. TODO - Add the new recipe to the recipes array
-        recipes.append(currentRecipe);
+        recipes.push(currentRecipe);
         // A9. TODO - Check to see if you have finished retrieving all of the recipes,
         //            if you have, then save the recipes to storage using the function
         //            we have provided. Then, pass the recipes array to the Promise's
         //            resolve() method.
         // function provided: saveRecipesToStorage(recipes)
-        if (i == RECIPE_URLS.length - 1){
+        if (i == RECIPE_URLS.length){
           saveRecipesToStorage(recipes);
           // pass the recipes array to the Promise's resolve() method.
           resolve(recipes);
         }
-      } catch (error){
+      } catch (e){
         // A10. TODO - Log any errors from catch using console.error
+        console.error(e);
         // A11. TODO - Pass any errors to the Promise's reject() function
+        reject(e);
       }
     }// end of for loop
   }); // end of A3
