@@ -39,12 +39,12 @@ self.addEventListener('fetch', function (event) {
   //            Otherwise fetch the resource, add it to the cache, and return
   //            network response.
   event.respondWith(caches.open(CACHE_NAME).then((cache) => {
-      return cache.match(event.request).then(cachedResponse) => {
+    return cache.match(event.request).then((cachedResponse) => {
         return cachedResponse || fetch(event.request).then((fetchedResponse) => {
-          cache.put(event.request. fetchedResponse.clone());
-
-        
-      });
+            cache.put(event.request, fetchedResponse.clone());
+            // B8. Return network response
+            return fetchedResponse;
+        });
     });
   }));
 
