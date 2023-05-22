@@ -38,13 +38,14 @@ self.addEventListener('fetch', function (event) {
   // B8. TODO - If the request is in the cache, return with the cached version.
   //            Otherwise fetch the resource, add it to the cache, and return
   //            network response.
-  event.respondWith(
-    caches.open(CACHE_NAME).then(async function(cache) {
-      const response = await cache.match(event.request);
-      return response || fetch(event.request).then(function (response_1) {
-        cache.put(event.request, response_1.clone());
-        return response_1;
+  event.respondWith(caches.open(CACHE_NAME).then((cache) => {
+      return cache.match(event.request).then(cachedResponse) => {
+        return cachedResponse || fetch(event.request).then((fetchedResponse) => {
+          cache.put(event.request. fetchedResponse.clone());
+
+        
       });
-    })
-  );
+    });
+  }));
+
 });
